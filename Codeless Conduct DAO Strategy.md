@@ -25,7 +25,9 @@ For the decentralized world of the future, we will foster talent who will drive 
 ### Putting it all in action
 
 The strategy outlined below advocates an approach to:
+
 **1. First, succeed as a collective:** Transition the periodic engagement in the form of the hackathon competition into a continuous learning experience for Web3 aspirants enabled by a collective
+
 **2. Then, scale as a DAO:** Transform the collective into a DAO over time to take advantage of transparent operations, autonomous governance, and self-sustaining liquidity enabled by crypto-native primitives
 
 #### Succeed as a Collective
