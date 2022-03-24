@@ -1,0 +1,62 @@
+title Coded Conduct
+
+actor owner
+actor sponsor
+actor coach
+actor aspirant
+
+owner->SC_DAO: Deploy
+
+# sponsor registers
+sponsor-> SC_DAO: register as sponsor | pay 3ETH
+note over SC_DAO: balance: 3ETH
+SC_DAO->SC_User: _registerAsSponsor
+note over SC_User: 1. mark kyc complete \n 2. grantRole(SPONSOR)
+SC_DAO->SC_WickedToken: mint(to: sponsorsAddress, qty:2000)
+SC_WickedToken->sponsor: 2000 WICKED
+
+# coach registers
+coach->SC_DAO: register as new user
+SC_DAO->SC_User: _registerAsNewUser
+note over SC_User: 1. mark kyc complete \n 2. grantRole(ASPIRANT)
+sponsor->SC_DAO: upgrade user to coach (coach's address)
+SC_DAO->SC_User: _promoteUsertoCoach(coach's address)
+note over SC_User: grantRole(COACH)
+
+# aspirant registers
+aspirant->SC_DAO: register as new user
+SC_DAO->SC_User: _registerAsNewUser
+note over SC_User: 1. mark kyc complete \n 2. grantRole(ASPIRANT)
+
+
+# create activity
+coach->SC_DAO: create activity \n(\nname, \ndescription, \nNo. of tokens = 5\n)
+SC_DAO->SC_Activities:_createActivity
+SC_Activities->coach: activityId
+
+# staff activity
+aspirant->SC_DAO: opt-in to activity (activityId)
+SC_DAO->SC_Activities:joinActivity(activityId)
+note over SC_Activities: add msg.sender to current activity's aspirants list
+
+# approve fund
+sponsor->SC_DAO: approve(numOfTokens
+
+# fund activity
+sponsor->SC_DAO: fund activity(activityId, numOfTokens)
+note over SC_DAO: require | numOfTokens === current activities minimum fund
+note over SC_DAO: require | balance of msg.sender >= numOfTokens
+SC_DAO->SC_WickedToken: transferFrom(msg.sender, DAO, numOfTokens)
+SC_DAO->SC_Activities: _markActivityFunded
+
+
+
+# complete activity
+coach->SC_DAO: mark activity complete
+SC_DAO->SC_WickedToken: transferFrom(DAO, aspirant, 1)
+SC_WickedToken->aspirant: 1token
+SC_DAO->SC_WickedToken: transferFrom(DAO, coach, 1)
+SC_WickedToken->coach: 1token
+SC_DAO->SC_WickedToken: transferFrom(DAO, sponsor, balanceTokens)
+SC_WickedToken->sponsor: balance tokens
+SC_DAO->SC_Activities: _markActivityCompleted
